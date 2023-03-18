@@ -6,6 +6,7 @@ from skimage.io import imread
 import cv2
 import os
 import edge_detection
+import Ellipsed as Elp
 # vars
 num_of_lines=0
 image_path1=' '
@@ -25,13 +26,15 @@ with st.sidebar:
         plt.imread(uploaded_file)
         image_path1=os.path.join(path,uploaded_file.name)
         st.title("Options")
-        option = st.selectbox("",["Canny edge detector","Hough line"])
+        option = st.selectbox("",["Canny edge detector","Hough line","Ellipse Detection"])
         if option=='Hough line':
             num_of_lines = st.slider(label="Number of lines", min_value=1, max_value=300, step=1)
             line_color = st.selectbox("Lines color",["Red","Blue","Green"])
         if option=='Canny edge detector':
             canny_kernal = st.selectbox('Select kernal size',('3x3','5x5'))
             canny_sigma = st.number_input('Sigma', min_value=1, value=10, step=2)
+        if option=='Ellipse Detection':
+            Thickness = st.slider(label="Thickness", min_value=1, max_value=5, step=1)
 
 
 input_img, resulted_img = st.columns(2)
@@ -52,6 +55,9 @@ with resulted_img:
             st.image(edge_detection.canny_detector(image1, 3, canny_sigma))
         elif canny_kernal == '5x5':
             st.image(edge_detection.canny_detector(image1, 5, canny_sigma))
+    if option == 'Ellipse Detection':
+        Elp.edge_ellipsed_detector(uploaded_file,Thickness)
+        st.image("./images/output/elp.jpeg")
 
 
 
