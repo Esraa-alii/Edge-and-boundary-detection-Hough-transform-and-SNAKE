@@ -50,7 +50,8 @@ with input_img :
         st.image(uploaded_file)
     
 with resulted_img:
-    st.title("Output")
+    if uploaded_file is not None:
+        st.title("Output")
     if option=='Line Detection':
         houghLine=hough.hough_lines(T_low,T_high,neighborhood_size,line_color,image,num_of_lines)
         st.image("images/output/hough_line.jpeg")
