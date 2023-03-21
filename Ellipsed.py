@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 
-def edge_ellipsed_detector(input,thickness):
+def edge_ellipsed_detector(input,thickness,color):
     
     img = plt.imread(input)   
     img = cv2.resize(img,(512,512))
@@ -18,12 +18,14 @@ def edge_ellipsed_detector(input,thickness):
 
     # print("Number of contours = "+ str(len(contours)))
     # print(contours[0])
+    if color == 'Red':
+        cv2.drawContours(img,contours,-1,(255, 0, 0),thickness)
+    elif color == 'Blue':
+        cv2.drawContours(img,contours,-1,(0,0,205),thickness)
+    elif color == 'Green':
+        cv2.drawContours(img,contours,-1,(50,205,50),thickness)
 
-    cv2.drawContours(img,contours,-1,(0,255,0),thickness)
-
-    
-    
-    
     plt.imshow(img)
+    plt.axis("off")
     plt.savefig('./images/output/elp.jpeg')
     

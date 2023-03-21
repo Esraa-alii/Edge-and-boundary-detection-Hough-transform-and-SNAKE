@@ -26,8 +26,8 @@ with st.sidebar:
         plt.imread(uploaded_file)
         image_path1=os.path.join(path,uploaded_file.name)
         st.title("Options")
-        option = st.selectbox("",["Canny edge detector","Hough line","Ellipse Detection"])
-        if option=='Hough line':
+        option = st.selectbox("",["Canny edge detector","Line Detection","Ellipse Detection"])
+        if option=='Line Detection':
             num_of_lines = st.slider(label="Number of lines", min_value=1, max_value=300, step=1)
             T_low = st.slider(label="Low Threshold",min_value=1, max_value=400, step=10)
             T_high = st.slider(label="High Threshold",min_value=10, max_value=500, step=10)
@@ -39,6 +39,7 @@ with st.sidebar:
             canny_sigma = st.number_input('Sigma', min_value=1, value=10, step=2)
         if option=='Ellipse Detection':
             Thickness = st.slider(label="Thickness", min_value=1, max_value=5, step=1)
+            elipse_color = st.selectbox("Lines color",["Red","Blue","Green"])
 
 
 input_img, resulted_img = st.columns(2)
@@ -50,7 +51,7 @@ with input_img :
     
 with resulted_img:
     st.title("Output")
-    if option=='Hough line':
+    if option=='Line Detection':
         houghLine=hough.hough_lines(T_low,T_high,neighborhood_size,line_color,image,num_of_lines)
         st.image("images/output/hough_line.jpeg")
 
@@ -61,31 +62,7 @@ with resulted_img:
         elif canny_kernal == '5x5':
             st.image(edge_detection.canny_detector(image1, 5, canny_sigma))
     if option == 'Ellipse Detection':
-        Elp.edge_ellipsed_detector(uploaded_file,Thickness)
+        Elp.edge_ellipsed_detector(uploaded_file,Thickness,elipse_color)
         st.image("./images/output/elp.jpeg")
 
 
-
-# ----------------------------Canny---------------
-# if edge_detect_options == 'Canny':
-#                 canny_kernal = st.selectbox('Select kernal size',('3x3','5x5'))
-#                 canny_sigma = st.number_input('Sigma', min_value=1, value=10, step=2)
-#             if edge_detect_options == "Sobel":
-#                 sobel = st.selectbox("Sobel",("Vertical","Horizontal","Both"))
-#             elif edge_detect_options == "Prewitt":
-#                 prewitt = st.selectbox("Prewitt",("Vertical","Horizontal","Both"))
-#             elif edge_detect_options == "Roberts":
-#                 roberts = st.selectbox("Roberts",("Vertical","Horizontal","Both"))
-                
-        # with input_img:
-        #     st.title("Input image")
-        #     image = Image.open(uploaded_file)
-        #     st.image(image1)
-        # with resulted_img:
-        #     st.title("Output image")
-        #     image1=cv2.imread(image_path1,0)
-        #     if edge_detect_options == 'Canny':
-        #         if canny_kernal == '3x3':
-        #             st.image(edge_detection.canny_detector(image1, 3, canny_sigma))
-        #         elif canny_kernal == '5x5':
-        #             st.image(edge_detection.canny_detector(image1, 5, canny_sigma))
