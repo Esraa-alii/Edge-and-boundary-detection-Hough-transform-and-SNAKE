@@ -93,7 +93,8 @@ def hough_lines_draw(color,img, indices, rhos, thetas):
             cv.line(img, (x1, y1), (x2, y2), (50,205,50), 2)
 
 
-def line_detection(image: np.ndarray):
+
+def line_detection(image: np.ndarray,T_low,T_upper):
     """Fucntion that detects lines in hough domain
     Args:
         image (np.ndarray())
@@ -102,9 +103,10 @@ def line_detection(image: np.ndarray):
         rhos: norm distances of each line from origin
         thetas: the angles between the norms and the horizontal x axis
     """
+    
     grayImg = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     blurImg = cv.GaussianBlur(grayImg, (5,5), 1.5)
-    edgeImg = cv.Canny(blurImg, 100, 200)
+    edgeImg = cv.Canny(blurImg, T_low, T_upper)
     
 
     height, width = edgeImg.shape
@@ -126,7 +128,7 @@ def line_detection(image: np.ndarray):
     return accumulator, thetas, rhos
 
 
-def hough_lines(color, source: np.ndarray, peaks: int = 10):
+def hough_lines(T_low,T_high,neighborhood_size,color,source: np.ndarray,peaks):
     """detect lines and draw them on the image
     Args:
         source (np.ndarray): image
@@ -136,11 +138,10 @@ def hough_lines(color, source: np.ndarray, peaks: int = 10):
     """
     
     src = np.copy(source)
-    H, thetas, rhos = line_detection(src)
-    indicies, H = hough_peaks(H, peaks, neighborhood_size=10) 
-    hough_lines_draw(color, src, indicies, rhos, thetas)
+    H, thetas, rhos = line_detection(src,T_low,T_high)
+    indicies, H = hough_peaks(H, peaks, neighborhood_size) 
+    hough_lines_draw(color,src, indicies, rhos, thetas)
     plt.imshow(src)
     plt.axis("off")
-    plt.savefig("images/output/haugh_line.jpeg")              
-
+    plt.savefig("images/output/hough_line.jpeg")   
     return src

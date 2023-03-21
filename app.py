@@ -29,7 +29,11 @@ with st.sidebar:
         option = st.selectbox("",["Canny edge detector","Hough line","Ellipse Detection"])
         if option=='Hough line':
             num_of_lines = st.slider(label="Number of lines", min_value=1, max_value=300, step=1)
+            T_low = st.slider(label="Low Threshold",min_value=1, max_value=400, step=10)
+            T_high = st.slider(label="High Threshold",min_value=10, max_value=500, step=10)
+            neighborhood_size=st.slider(label="Neighborhood size",min_value=1, max_value=200, step=5)
             line_color = st.selectbox("Lines color",["Red","Blue","Green"])
+
         if option=='Canny edge detector':
             canny_kernal = st.selectbox('Select kernal size',('3x3','5x5'))
             canny_sigma = st.number_input('Sigma', min_value=1, value=10, step=2)
@@ -47,8 +51,9 @@ with input_img :
 with resulted_img:
     st.title("Output")
     if option=='Hough line':
-        houghLine=hough.hough_lines(line_color,image,num_of_lines)
-        st.image("images/output/haugh_line.jpeg")
+        houghLine=hough.hough_lines(T_low,T_high,neighborhood_size,line_color,image,num_of_lines)
+        st.image("images/output/hough_line.jpeg")
+
     if option =='Canny edge detector':
         image1=cv2.imread(image_path1,0)
         if canny_kernal == '3x3':
