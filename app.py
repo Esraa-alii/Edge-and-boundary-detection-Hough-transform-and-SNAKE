@@ -26,7 +26,7 @@ with st.sidebar:
         plt.imread(uploaded_file)
         image_path1=os.path.join(path,uploaded_file.name)
         st.title("Options")
-        option = st.selectbox("",["Canny edge detector","Line Detection","Ellipse Detection"])
+        option = st.selectbox("",["Canny edge detector","Line Detection","Ellipse Detection","Circle Detection"])
         if option=='Line Detection':
             num_of_lines = st.slider(label="Number of lines", min_value=1, max_value=300, step=1)
             T_low = st.slider(label="Low Threshold",min_value=1, max_value=400, step=10)
@@ -40,6 +40,12 @@ with st.sidebar:
         if option=='Ellipse Detection':
             Thickness = st.slider(label="Thickness", min_value=1, max_value=5, step=1)
             elipse_color = st.selectbox("Lines color",["Red","Blue","Green"])
+        if option =='Circle Detection':
+            r_min = st.slider(label="minimum radius", min_value=1, max_value=50, step=2)
+            r_max = st.slider(label="maximum radius", min_value=50, max_value=200, step=5)
+            bin_threshold = st.slider(label="bin threshold", min_value=1, max_value=10, step=1)
+            pixel_threshold = st.slider(label="pixel threshold", min_value=10, max_value=100, step=5)
+            circle_color = st.selectbox("Lines color",["Red","Blue","Green"])
 
 
 input_img, resulted_img = st.columns(2)
@@ -65,5 +71,12 @@ with resulted_img:
     if option == 'Ellipse Detection':
         Elp.edge_ellipsed_detector(uploaded_file,Thickness,elipse_color)
         st.image("./images/output/elp.jpeg")
+
+    if option == 'Circle Detection':
+        circle_img = hough.houghCircles(circle_color, image_path1, r_min , r_max, bin_threshold , pixel_threshold)
+        plt.axis("off")
+        plt.imshow(circle_img)
+        plt.savefig("./images/output/hough_circle.jpeg")   
+        st.image("./images/output/hough_circle.jpeg")
 
 
