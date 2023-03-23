@@ -46,9 +46,6 @@ def sobel(img):
     filteredImgV = convolution(img, sobelVKernel)
     return np.sqrt(pow(filteredImgH, 2.0) + pow(filteredImgV, 2.0))
 
-def calculateAreaPerimeter (contour_x: np.ndarray, contour_y: np.ndarray):
-    area=0.5*np.sum(contour_y[:-1]*np.diff(contour_x) - contour_x[:-1]*np.diff(contour_y))
-    return abs(area)
 
 def iterate_contour(source: np.ndarray, contour_x: np.ndarray, contour_y: np.ndarray,
                     external_energy: np.ndarray, window_coordinates: list,
@@ -174,3 +171,10 @@ def calculations(contour):
 
     # return the perimeter and area
     return perimeter, area
+
+def circle_contour(center_x,center_y,radius,points_num):
+    theta = np.linspace(0,2*np.pi,int(points_num))
+    x_values = int(center_x) + (radius * np.cos(theta))
+    y_values = int(center_x) + (radius * np.sin(theta))
+    circle = np.array([x_values,y_values]).T
+    return circle

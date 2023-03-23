@@ -7,6 +7,10 @@ import cv2
 import os
 import edge_detection
 import Ellipsed as Elp
+import functions as fn
+import numpy as np
+import plotly.graph_objects as go
+
 # vars
 num_of_lines=0
 image_path1=' '
@@ -26,7 +30,7 @@ with st.sidebar:
         plt.imread(uploaded_file)
         image_path1=os.path.join(path,uploaded_file.name)
         st.title("Options")
-        option = st.selectbox("",["Canny edge detector","Line Detection","Ellipse Detection","Circle Detection"])
+        option = st.selectbox("",["Canny edge detector","Line Detection","Ellipse Detection","Circle Detection","Snake"])
         if option=='Line Detection':
             num_of_lines = st.slider(label="Number of lines", min_value=1, max_value=300, step=1)
             T_low = st.slider(label="Low Threshold",min_value=1, max_value=400, step=10)
@@ -78,5 +82,12 @@ with resulted_img:
         plt.axis('off')
         plt.savefig("./images/output/hough_circle.jpeg")   
         st.image("./images/output/hough_circle.jpeg")
-
-
+    if option == "Snake":
+        image1 = imread(uploaded_file,True)
+        with st.sidebar:
+            center_x = st.slider("center x-coordinates",min_value=0,max_value=image1.shape[1])
+            center_y = st.slider("center y-coordinates",min_value=0,max_value=image1.shape[0])
+            radius = st.slider("radius",min_value=0,max_value=int(np.min(image1.shape)/2))
+            num = st.slider("points number",min_value=0,max_value=100)
+            circle= fn.circle_contour(center_x,center_y,radius,num)
+        perimeter,area= fn.calculations()
