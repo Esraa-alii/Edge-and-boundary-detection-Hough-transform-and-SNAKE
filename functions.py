@@ -140,3 +140,37 @@ def calculate_external_energy(source, WLine, WEdge):
     ELine = gaussian_filter(source,7,7)	
     EEdge = sobel(ELine)
     return WLine * ELine + WEdge * EEdge
+
+def calculations(contour):
+    """
+    Find the area and the perimeter of an input contour
+
+    Args :
+    ------
+        contour (numpy.ndarray): Input contour
+
+    Returns:
+    --------
+        perimeter: Preimeter of the contour
+        area: Area of the contour   
+    """
+    # extract x and y coordinates from the contour array
+    x = contour[:, 0]
+    y = contour[:, 1]
+
+    # initialize the perimeter and area variables to zero
+    perimeter = 0
+    area = 0
+
+    # iterate over the contour points and calculate the perimeter and area
+    for i in np.arange(len(x)-1):
+        # calculate the distance between the current point and the next point
+        distance = np.sqrt(np.square(x[i+1]-x[i])+np.square(y[i+1]-y[i]))
+        perimeter += distance
+        
+        # calculate the trapezoidal area between the current point and the next point
+        trapezoidal_area = 0.5*(y[i]+y[i+1])*(x[i]-x[i+1])
+        area += trapezoidal_area
+
+    # return the perimeter and area
+    return perimeter, area
