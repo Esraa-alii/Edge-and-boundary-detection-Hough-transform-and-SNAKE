@@ -151,7 +151,7 @@ def hough_lines(T_low,T_high,neighborhood_size,color,source: np.ndarray,peaks):
 
 
 
-def houghCircles(circle_color, img_path:str, r_min, r_max, bin_threshold, pixel_threshold, delta_r:int = 1, num_thetas:int = 100,  min_edge_threshold:int = 100, max_edge_threshold:int = 200, post_process:bool = True):
+def houghCircles(circle_color,img_path:str, r_min:int = 20, r_max:int = 100, delta_r:int = 1, num_thetas:int = 100, bin_threshold:float = 0.4, min_edge_threshold:int = 100, max_edge_threshold:int = 200, pixel_threshold:int = 20,  post_process:bool = True):
     
     """Function that detects circles in haugh domain.
     Args:

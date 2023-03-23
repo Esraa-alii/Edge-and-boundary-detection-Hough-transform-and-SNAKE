@@ -41,9 +41,9 @@ with st.sidebar:
             Thickness = st.slider(label="Thickness", min_value=1, max_value=5, step=1)
             elipse_color = st.selectbox("Lines color",["Red","Blue","Green"])
         if option =='Circle Detection':
-            r_min = st.slider(label="minimum radius", min_value=1, max_value=50, step=2)
-            r_max = st.slider(label="maximum radius", min_value=50, max_value=200, step=5)
-            bin_threshold = st.slider(label="bin threshold", min_value=1, max_value=10, step=1)
+            r_min = st.slider(label="minimum radius", min_value=30, max_value=100, step=2)
+            r_max = st.slider(label="maximum radius", min_value=50, max_value=250, step=5)
+            bin_threshold = st.slider(label="bin threshold", min_value=0.1, max_value=1.0, step=0.1)
             pixel_threshold = st.slider(label="pixel threshold", min_value=10, max_value=100, step=5)
             circle_color = st.selectbox("Lines color",["Red","Blue","Green"])
 
@@ -73,9 +73,9 @@ with resulted_img:
         st.image("./images/output/elp.jpeg")
 
     if option == 'Circle Detection':
-        circle_img = hough.houghCircles(circle_color, image_path1, r_min , r_max, bin_threshold , pixel_threshold)
-        plt.axis("off")
+        circle_img = hough.houghCircles(circle_color, image_path1, r_min , r_max)
         plt.imshow(circle_img)
+        plt.axis('off')
         plt.savefig("./images/output/hough_circle.jpeg")   
         st.image("./images/output/hough_circle.jpeg")
 
