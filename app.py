@@ -90,4 +90,5 @@ with resulted_img:
             radius = st.slider("radius",min_value=0,max_value=int(np.min(image1.shape)/2))
             num = st.slider("points number",min_value=0,max_value=100)
             circle= fn.circle_contour(center_x,center_y,radius,num)
-        perimeter,area= fn.calculations()
+        perimeter,area= fn.calculations(circle)
+        print(perimeter,area)
