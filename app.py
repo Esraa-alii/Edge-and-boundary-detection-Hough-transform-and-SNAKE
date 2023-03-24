@@ -1,12 +1,13 @@
 import streamlit as st
 import Hough as hough
-from PIL import Image
+from PIL import Image, ImageOps
 import matplotlib.pyplot as plt
 from skimage.io import imread
 import cv2
 import os
 import edge_detection
 import Ellipsed as Elp
+import snake_countor as snake
 import functions as fn
 import numpy as np
 import plotly.graph_objects as go
@@ -51,6 +52,13 @@ with st.sidebar:
             pixel_threshold = st.slider(label="pixel threshold", min_value=10, max_value=100, step=5)
             circle_color = st.selectbox("Lines color",["Red","Blue","Green"])
 
+        if option =='Snake':
+            alpha = st.slider(label="Alpha", min_value=0.001, max_value=2.0, step=0.001)
+            beta = st.slider(label="Beta", min_value=0.01, max_value=2.0, step=0.01)
+            gamma = st.slider(label="Gamma", min_value=10, max_value=200, step=5)
+            iterations=st.slider(label="Number of iterations", min_value=1, max_value=800, step=1)
+            sigma = st.slider(label="Sigma", min_value=1, max_value=200, step=1)
+
 
 input_img, resulted_img = st.columns(2)
 with input_img :
@@ -83,12 +91,21 @@ with resulted_img:
         plt.savefig("./images/output/hough_circle.jpeg")   
         st.image("./images/output/hough_circle.jpeg")
     if option == "Snake":
-        image1 = imread(uploaded_file,True)
-        with st.sidebar:
-            center_x = st.slider("center x-coordinates",min_value=0,max_value=image1.shape[1])
-            center_y = st.slider("center y-coordinates",min_value=0,max_value=image1.shape[0])
-            radius = st.slider("radius",min_value=0,max_value=int(np.min(image1.shape)/2))
-            num = st.slider("points number",min_value=0,max_value=100)
-            circle= fn.circle_contour(center_x,center_y,radius,num)
-        perimeter,area= fn.calculations(circle)
-        print(perimeter,area)
+        og_image = Image.open(image_path1)
+        gray_image = ImageOps.grayscale(og_image)
+        resized_gray_img = snake.resize_img(gray_image)
+        np_image = np.array(gray_image)
+        resized_np_image = np.array(resized_gray_img)
+        area,perimeter=snake.activeContour(resized_np_image,alpha,beta,gamma,iterations,sigma)
+        st.image("./images/output/snake.jpeg")
+        st.write("Area = ",area)
+        st.write("perimeter = ",perimeter)
+        # st.subheader("Area = ",area)
+        # with st.sidebar:
+        #     center_x = st.slider("center x-coordinates",min_value=0,max_value=image1.shape[1])
+        #     center_y = st.slider("center y-coordinates",min_value=0,max_value=image1.shape[0])
+        #     radius = st.slider("radius",min_value=0,max_value=int(np.min(image1.shape)/2))
+        #     num = st.slider("points number",min_value=0,max_value=100)
+        #     circle= fn.circle_contour(center_x,center_y,radius,num)
+        # perimeter,area= fn.calculations(circle)
+        # print(perimeter,area)
