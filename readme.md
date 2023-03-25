@@ -63,9 +63,17 @@ To start deployment
 ![main widow](./Demo/ellipse2.png)
 
 3. Detect circles
+![main widow](./Demo/c1.jpeg)
+![main widow](./Demo/c2.jpeg)
+
+
+
 
 
 ###  Apply Active Contour (Snake)
+![main widow](./Demo/snake.png)
+
+![main widow](./Demo/snake2.png)
 
 
 
